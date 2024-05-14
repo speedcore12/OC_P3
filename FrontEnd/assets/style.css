@@ -137,48 +137,53 @@ li:hover {
 	width: 100%;
 
 }
-#contact {
+/* Styles appliqués à la fois à #contact et #loginForm */
+#contact, #loginForm {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
-#contact > * {
-	text-align: center;
 
+#contact > *, #loginForm > * {
+	text-align: center;
 }
-#contact h2{
+
+#contact h2, #loginForm h2 {
 	margin-bottom: 20px;
 }
-#contact form {
+
+#contact form, #loginForm form {
 	text-align: left;
-	margin-top:30px;
+	margin-top: 30px;
 	display: flex;
 	flex-direction: column;
 }
 
-#contact input {
+/* Grouper les styles communs pour input et textarea */
+#contact input, #loginForm input,
+#contact textarea, #loginForm textarea {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-#contact label {
+
+/* Simplification pour les labels */
+#contact label, #loginForm label {
 	margin: 2em 0 1em 0;
 }
-#contact textarea {
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-}
 
-input[type="submit"]{
+/* Styles spécifiques pour les boutons submit, qui s'appliquent à tous les input[type="submit"] dans la page */
+input[type="submit"] {
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
 	background-color: #1D6154;
-	margin : 2em auto ;
+	margin: 2em auto;
 	width: 180px;
 	text-align: center;
-	border-radius: 60px ;
+	border-radius: 60px;
 }
+
 
 footer nav ul {
 	display: flex;
@@ -186,3 +191,74 @@ footer nav ul {
 	margin: 2em
 }
 
+.filters{
+
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.filters button, #loginForm button{
+	margin: 30px;
+	padding: 10px;
+
+	font-family: 'Syne';
+	color: #1D6154;
+    font-weight: bold;
+	font-size: 16px;
+
+	border-color:  #1D6154;
+	border: 1px solid #1D6154;
+	border-radius: 20px;
+	background-color: white;
+}
+
+.filters button:hover, #loginForm button:hover{
+	background-color: #1D6154;
+	color: white;
+}
+
+.login-contener {
+    font-family: 'Syne';
+    width: 75%; 
+    margin: auto;
+    padding: 20px;
+	display: flex;
+	flex-direction: column;
+}
+
+.login-contener h2{
+	margin: auto;
+	padding-bottom: 20px;
+}
+
+.login-contener label {
+    margin-bottom: 5px; 
+    text-align: left; 
+    color: #333; 
+}
+
+.login-contener input {
+    width: 100%; 
+    padding: 10px;
+    margin: 20px 0 10px 0; 
+    border: 1px solid #ccc; 
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09); 
+}
+
+.login-contener a {
+    color: inherit;
+	margin: auto;
+}
+
+.login-contener button{
+	display: block; /* Rend le bouton un bloc pour permettre le centrage */
+    margin-left: auto; /* Marge automatique à gauche */
+    margin-right: auto; /* Marge automatique à droite */
+}
+
+#errorMessage {
+    color: red; 
+    display: none; 
+    text-align: center; 
+}
