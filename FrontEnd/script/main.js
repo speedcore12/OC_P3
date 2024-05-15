@@ -103,12 +103,6 @@ async function displayGallery(categoryId = null) {
     }
 }
 
-///////////      MAIN       ///////////
-
-displayGallery();  // Exécute la fonction pour afficher la galerie
-
-
-
 //////// BOUTONS FILTRATION /////////
 
 document.getElementById('filter-Tous').addEventListener('click', function() {
@@ -126,3 +120,70 @@ document.getElementById('filter-Appartements').addEventListener('click', functio
 document.getElementById('filter-Hotels_restaurants').addEventListener('click', function() {
     displayGallery(3); // Fonction pour afficher les travaux de la catégorie "Hôtels & Restaurants"
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const buttons = document.querySelectorAll('.filters button');
+    
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Retire la classe 'selected' de tous les boutons
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            
+            // Ajoute la classe 'selected' au bouton qui a été cliqué
+            button.classList.add('selected');
+        });
+    });
+});
+
+////////////// LOG IN & OUT ///////////
+
+// LogIn check
+document.addEventListener('DOMContentLoaded', function() {
+    // Fonction pour vérifier si l'utilisateur est connecté
+    function checkIfLoggedIn() {
+        const token = localStorage.getItem('jwt'); // Récupère le token du localStorage
+        if (token) {
+            console.log('Utilisateur connecté'); // Log pour vérification          
+                // Sélectionne et modifie les éléments selon que l'utilisateur est connecté
+                document.querySelectorAll('.edit-banner, .logout-button, .edit-button').forEach(element => {
+                    element.classList.remove('hide'); // Retire la classe 'hide' pour rendre visible
+                });
+                document.querySelectorAll('.filters, .login-button').forEach(element => {
+                    element.classList.add('hide'); // Ajoute la classe 'hide' pour cacher
+                });
+        } else {
+            console.log('Utilisateur non connecté');
+            // Sélectionne et modifie les éléments selon que l'utilisateur est non connecté
+            document.querySelectorAll('.filters, .login-button').forEach(element => {
+                element.classList.remove('hide'); // Retire la classe 'hide' pour rendre visible
+            });
+            document.querySelectorAll('.edit-banner, .logout-button, .edit-button').forEach(element => {
+                element.classList.add('hide'); // Ajoute la classe 'hide' pour cacher
+            });
+        }
+    }
+
+    checkIfLoggedIn(); // Appelle la fonction au chargement de la page
+});
+
+// LogOut
+// Sélectionne tous les éléments avec la classe 'logout'
+const logoutElements = document.querySelectorAll('.logout-button');
+
+// Ajoute un gestionnaire de clic à chaque élément
+logoutElements.forEach(logoutElement => {
+    logoutElement.addEventListener('click', function() {
+        localStorage.removeItem('jwt');  // Supprime le JWT de localStorage
+        console.log('Déconnexion réussie');
+        // Optionnel: Rediriger vers la page de connexion
+        window.location.href = 'index.html';
+    });
+});
+
+
+///////////      MAIN       ///////////
+
+displayGallery();  // Exécute la fonction pour afficher la galerie
+
+
+

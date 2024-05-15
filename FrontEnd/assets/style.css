@@ -47,17 +47,33 @@ table {
 	border-spacing: 0;
 }
 /** end reset css**/
-body {
+body{
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+}
+main, .top-menu {
 	max-width: 1140px;
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 }
+
 header {
 	display: flex;
-	justify-content: space-between;
-	margin: 50px 0
+	flex-direction: column;
+
 }
+
+.top-menu {
+	display: flex;
+	justify-content: space-between;
+	margin: 50px 0;
+	width: 100%;	
+	margin: auto;
+	margin-top: 30px;
+}
+
 section {
 	margin: 50px 0
 }
@@ -84,6 +100,7 @@ h2{
 	font-size: 30px;
 	color: #1D6154
 }
+
 nav ul {
 	display: flex;
 	align-items: center;
@@ -93,6 +110,11 @@ nav ul {
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
+}
+li a {
+    color: inherit;        /* Les liens prennent la couleur de leur élément parent */
+    text-decoration: none; /* Supprime le soulignement */
+    cursor: auto;          /* Utilise le curseur par défaut au lieu du pointeur */
 }
 
 li:hover {
@@ -121,10 +143,7 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
-#portfolio h2 {
-	text-align: center;
-	margin-bottom: 1em;
-}
+
 .gallery {
 	width: 100%;
 	display: grid;
@@ -196,15 +215,28 @@ footer nav ul {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
+	align-items: center;
+}
+
+.filter-title{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 50px;
+}
+
+.filter-title p{
+	margin-left: 20px;
+	font-size: 14px;
 }
 
 .filters button, #loginForm button{
-	margin: 30px;
+	margin: 0 30px 30px 30px;
+
 	padding: 10px;
 
 	font-family: 'Syne';
 	color: #1D6154;
-    font-weight: bold;
 	font-size: 16px;
 
 	border-color:  #1D6154;
@@ -213,10 +245,20 @@ footer nav ul {
 	background-color: white;
 }
 
-.filters button:hover, #loginForm button:hover{
+.filters button:hover, .filters button.selected, #loginForm button{
 	background-color: #1D6154;
 	color: white;
 }
+
+#loginForm button{
+		width: 50%;
+		margin: auto;
+}
+
+#loginForm input{
+	margin-bottom: 35px;
+}
+
 
 .login-contener {
     font-family: 'Syne';
@@ -249,6 +291,7 @@ footer nav ul {
 .login-contener a {
     color: inherit;
 	margin: auto;
+	padding-top: 35px;
 }
 
 .login-contener button{
@@ -261,4 +304,27 @@ footer nav ul {
     color: red; 
     display: none; 
     text-align: center; 
+	margin-top: 20px;
+}
+
+
+
+.edit-banner {
+    background-color: black;
+    color: white;
+    max-width: 100%;
+    height: 60px;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-banner p{
+	font-family: 'Work Sans' ;
+}
+
+.hide {
+	display: none;
 }

@@ -9,32 +9,36 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
-	<script src="main.js" defer></script>
+	<script src="./script/conection.js" defer></script>
 </head>
 <body>
-<header>
-	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
-	<nav>
-		<ul> 
-			<li>projets</li>
-			<li>contact</li>
-			<li>login</li>
-			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
-		</ul>
-	</nav>
-</header>
+	<header>
+		<div class="top-menu">
+			<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+			<nav>
+				<ul> 
+					<li><a href="index.html#portfolio">projets</a></li>
+					<li><a href="index.html#contact">contact</a></li>
+					<li><a href="connection.html">login</a></li>
+					<li class="hide">logout</li>
+					<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+				</ul>
+			</nav>
+		</div>
+	
+	</header>
 <main>
 
 	<div class="login-contener">
 		<h2>Log In</h2>
 		<form id="loginForm">
-			<label for="username">Email</label>
-			<input type="email" id="username" name="username" required>
-			<label for="password">Mot de passe</label>
-			<input type="password" id="password" name="password" required>
+			<label for="username">Email:</label>
+			<input type="email" id="username" name="username" autocomplete="email" required>
+			<label for="password">Mot de passe:</label>
+			<input type="password" id="password" name="password" autocomplete="current-password" required>
 			<button type="submit">Connexion</button>
 			<p id="errorMessage" style="color: red; display: none;">Erreur dans l’identifiant ou le mot de passe</p>
-		</form>
+		</form>		
 		<a href="#" color="black">Mot de passe oublié?</a>
 	</div>
 
