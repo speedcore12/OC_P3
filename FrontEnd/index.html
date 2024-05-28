@@ -15,11 +15,18 @@
 	<script src="./script/main.js" defer></script>
 </head>
 <body>
+<div class="overlay hide"></div>
+
+
+
 
 <header>
 	<div class="edit-banner hide">
 		<p><i class="fa-regular fa-pen-to-square"></i> Mode édition</p>		
 	</div>
+
+
+
 	<div class="top-menu">
 		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 		<nav>
@@ -27,7 +34,7 @@
 				<li><a href="index.html#portfolio">projets</a></li>
 				<li><a href="index.html#contact">contact</a></li>
 				<li class="login-button"><a href="connection.html">login</a></li>
-				<li class="logout-button hide">logout</li>
+				<li class="logout-button hide"><a href="#">logout</a></li>
 				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 			</ul>
 		</nav>
@@ -46,7 +53,7 @@
 			<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
-	</section>
+	</section>	
 
 	<section id="portfolio">
 		<div class="filter-title">
@@ -54,29 +61,11 @@
 			<p class="edit-button hide"><i class="fa-regular fa-pen-to-square"></i> modifier</p>
 		</div>
 
-		<div class="filters">
-			<button id="filter-Tous" data-category-id="">Tous</button>
-			<button id="filter-Objets" data-category-id="1">Objets</button>
-			<button id="filter-Appartements" data-category-id="2">Appartements</button>
-			<button id="filter-Hotels_restaurants" data-category-id="3">Hôtels & Restaurants</button>
-			
-		</div>
-		
+		<div class="filters"></div>		
 		<div class="gallery"></div>
 	</section>
 
 	<section id="contact">
-		<h2>Contact</h2>
-		<p>Vous avez un projet ? Discutons-en !</p>
-		<form action="#" method="post">
-			<label for="name">Nom</label>
-			<input type="text" name="name" id="name">
-			<label for="email">Email</label>
-			<input type="email" name="email" id="email">
-			<label for="message">Message</label>
-			<textarea name="message" id="message" cols="30" rows="10"></textarea>
-			<input type="submit" value="Envoyer">
-		</form>
 	</section>
 </main>
 

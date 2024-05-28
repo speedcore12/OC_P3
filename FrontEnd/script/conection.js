@@ -19,7 +19,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             body: JSON.stringify({ email, password })
         });
 
-        if (response.ok) {
+        if (response.ok) {           
             const data = await response.json();
             localStorage.setItem('jwt', data.token);
             window.location.href = 'index.html';
