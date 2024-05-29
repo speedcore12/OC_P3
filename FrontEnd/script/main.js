@@ -39,6 +39,93 @@ async function fetchData(type) {
     }
 }
 
+/**
+ * Fonction pour uploader un travail (work) vers le serveur.
+ * @param {File} image - Le fichier image à uploader.
+ * @param {string} title - Le titre du travail.
+ * @param {number} category - L'ID de la catégorie du travail.
+ */
+async function uploadWork(image, title, category) {
+    // Récupérer le token JWT depuis le localStorage
+    const token = localStorage.getItem('jwt'); 
+
+    // Créer un objet FormData pour préparer les données du formulaire à envoyer
+    const formData = new FormData(); 
+
+    // Ajouter l'image à l'objet FormData
+    formData.append('image', image); 
+
+    // Ajouter le titre à l'objet FormData
+    formData.append('title', title); 
+
+    // Ajouter l'ID de la catégorie à l'objet FormData
+    formData.append('category', category); 
+
+    try {
+        // Faire une requête POST vers l'API pour uploader le travail
+        const response = await fetch('http://localhost:5678/api/works', {
+            method: 'POST', // Méthode HTTP à utiliser pour la requête
+            headers: {
+                // Ajouter le token JWT à l'en-tête de la requête pour l'authentification
+                'Authorization': `Bearer ${token}`
+            },
+            // Utiliser l'objet FormData comme corps de la requête
+            body: formData 
+        });
+
+        // Vérifier si la requête a réussi
+        if (response.ok) {
+            // Extraire les données de la réponse JSON
+            const responseData = await response.json();
+            // Actions supplémentaires après l'upload, comme mettre à jour la galerie
+            console.log('Upload réussi:', responseData); // Log de succès pour vérification
+        } else {
+            // Extraire les données d'erreur de la réponse JSON
+            const errorData = await response.json();
+            // Lancer une erreur avec le statut de la réponse et les détails de l'erreur
+            throw new Error(`Erreur lors de l'upload: ${response.statusText}, ${JSON.stringify(errorData)}`);
+        }
+    } catch (error) {
+        // Log de l'erreur en cas d'échec de la requête
+        console.error('Failed to upload work:', error);
+    }
+}
+
+/**
+ * Fonction pour supprimer une image via l'API.
+ * @param {number} imageId - L'ID de l'image à supprimer.
+ */
+async function deleteImage(imageId) {
+    // Récupérer le token JWT depuis le localStorage pour l'authentification
+    const token = localStorage.getItem('jwt'); 
+
+    try {
+        // Faire une requête DELETE vers l'API pour supprimer l'image
+        const response = await fetch(`http://localhost:5678/api/works/${imageId}`, {
+            method: 'DELETE', // Méthode HTTP à utiliser pour la requête
+            headers: {
+                'accept': '*/*', // Accepter toutes les réponses de type MIME
+                'Authorization': `Bearer ${token}` // Ajouter le token JWT à l'en-tête de la requête pour l'authentification
+            }
+        });
+
+        // Vérifier si la requête a réussi
+        if (response.ok) {
+            // Supprime l'élément du DOM si la requête est réussie
+            displayGallery(); // Met à jour la galerie pour refléter les changements
+            createModal(); // Recrée la modale pour mettre à jour son contenu
+
+        } else {
+            // Lancer une erreur avec le statut de la réponse et les détails de l'erreur
+            throw new Error(`Erreur lors de la suppression de l'image: ${response.statusText}`);
+        }
+    } catch (error) {
+        // Log de l'erreur en cas d'échec de la requête
+        console.error('Failed to delete image:', error);
+    }
+}
+
+
 ////////////// CREATION DE LA GALLERIE  //////////////////////
 // Création d'un carte
 /**
@@ -257,22 +344,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // LogOut
 // Sélectionne tous les éléments avec la classe 'logout'
-const logoutElements = document.querySelectorAll('.logout-button');
+const logoutElement = document.querySelector('.logout-button');
+// Ajoute un gestionnaire de clic l'élément
+logoutElement.addEventListener('click', function() {
+    // Supprime le JWT de localStorage
+    localStorage.removeItem('jwt');  
 
-// Ajoute un gestionnaire de clic à chaque élément
-logoutElements.forEach(logoutElement => {
-    logoutElement.addEventListener('click', function() {
-        localStorage.removeItem('jwt');  // Supprime le JWT de localStorage
-        console.log('Déconnexion réussie');
-
-        window.location.href = 'index.html';
-    });
+    window.location.href = 'index.html';
 });
 
 //////////        MODALE  1     ////////////
-// Affiche la modale qand le bouton "modifier" est cliqué
-const editButton = document.querySelector('.edit-button');
-editButton.addEventListener('click', function() {    
+// Affiche la modale quand le bouton "modifier" est cliqué
+document.querySelector('.edit-button').addEventListener('click', function() {    
     createModal();
 });
 
@@ -332,26 +415,6 @@ function createModal() {
 
 
     addImagesToModal();
-    addDeleteEventListeners();
-}
-
-// Fonction pour fermer la modale
-function closeModal() {
-    const modal1 = document.querySelector('.modal');
-    const modal2 = document.querySelector('.modal-2');
-    const overlay = document.querySelector('.overlay');
-
-    // Ferme la modale si elle existe
-    if (modal1) {
-        modal1.remove();
-    }
-    if (modal2) {
-        modal2.remove();
-    }
-
-    // Ferme l'overlay
-    overlay.classList.add('hide'); // Ajoute la classe 'hide' à l'overlay
-    document.body.classList.remove('no-scroll'); // Retire la classe 'no-scroll' du body
 }
 
 async function addImagesToModal() {
@@ -378,71 +441,27 @@ async function addImagesToModal() {
             const icon = document.createElement('i');
             icon.classList.add('fa-solid', 'fa-trash-can');
 
+            icon.addEventListener('click', function() {
+                const imageId = icon.parentElement.dataset.id;
+
+                const confirmed = window.confirm("Voulez-vous vraiment supprimer ce projet ?");
+                if (confirmed) {
+                    deleteImage(imageId);
+                    createModal();
+                }
+            });
+
             // Ajoute l'icône à la div
             div.appendChild(icon);
 
             // Ajoute la div au conteneur
             container.appendChild(div);
-            addDeleteEventListeners();
         });
 
     } catch (error) {
         console.error('Failed to add images to modal:', error);
     }
 }
-
-function addDeleteEventListeners() {
-    const deleteIcons = document.querySelectorAll('.img-modal .fa-trash-can');
-
-    deleteIcons.forEach(icon => {
-        // Pour supprimer les écouteurs d'événements déja présent
-        // Crée une nouvelle icône en clonant l'ancienne
-        const newIcon = icon.cloneNode(true);
-        
-        // Remplace l'ancienne icône par la nouvelle dans le DOM
-        icon.parentNode.replaceChild(newIcon, icon);
-        
-        // Ajoute un écouteur d'événements à la nouvelle icône
-        newIcon.addEventListener('click', function() {
-            const imageId = newIcon.parentElement.dataset.id;
-            console.log('Icône cliquée, ID de l\'image:', imageId);
-
-            const confirmed = window.confirm("Voulez-vous vraiment supprimer ce projet ?");
-            if (confirmed) {
-                deleteImage(imageId);
-            }
-        });
-    });
-}
-
-// Fonction pour supprimer une image via l'API
-async function deleteImage(imageId) {
-    const token = localStorage.getItem('jwt');
-
-    try {
-        const response = await fetch(`http://localhost:5678/api/works/${imageId}`, {
-            method: 'DELETE',
-            headers: {
-                'accept': '*/*',
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
-        if (response.ok) {
-            // Supprime l'élément du DOM si la requête est réussie
-            console.log(`Image avec ID ${imageId} supprimée avec succès`);
-            createModal();
-            displayGallery();
-
-        } else {
-            throw new Error(`Erreur lors de la suppression de l'image: ${response.statusText}`);
-        }
-    } catch (error) {
-        console.error('Failed to delete image:', error);
-    }
-}
-
-///////////////// MODAL 2 ///////////////
 
 function createModal2() {
     // Supprime l'ancienne modal si elle existe
@@ -543,7 +562,7 @@ function createModal2() {
                 // Stocker l'image dans la variable globale
                 standByImg = img;
             };
-
+            // lecture avent callback
             reader.readAsDataURL(file);
         }
     });
@@ -598,8 +617,6 @@ function createModal2() {
 
     form.appendChild(selectCategory);
 
-    addCategoryOptions();
-
     // Crée la ligne horizontale
     const hr = document.createElement('hr');
     form.appendChild(hr);
@@ -622,7 +639,7 @@ function createModal2() {
     document.querySelector('.overlay').addEventListener('click', closeModal);
     backButton.addEventListener('click', createModal);
 
-    addCategoryOptions();
+    addCategoryOptions()
 
     // Ajouter la modification de la couleur du bouton submit
     // Récupère tous les champs requis
@@ -641,14 +658,11 @@ function createModal2() {
 
             if (allValid) {
                 submitButton.classList.add('clickable');
-                console.log('clickable ajouté');
             } else {
                 submitButton.classList.remove('clickable');
-                console.log('clickable retiré');
             }
         });
     });
-
 
     // Ajout de l'Event Listener au bouton de soumission de upload
     submitButton.addEventListener('click', function(event) {
@@ -665,42 +679,6 @@ function createModal2() {
 
 }
 
-async function uploadWork(image, title, category) {
-    const token = localStorage.getItem('jwt'); // Récupérer le token JWT
-    const formData = new FormData(); // Créer un objet FormData
-
-    formData.append('image', image); // Ajouter l'image à FormData
-    formData.append('title', title); // Ajouter le titre à FormData
-    formData.append('category', category); // Ajouter la catégorie à FormData
-
-        console.log('Uploading work with data:', {
-        image: image,
-        title: title,
-        category: category
-        }); 
-
-    try {
-        const response = await fetch('http://localhost:5678/api/works', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            },
-            body: formData // Utiliser FormData comme corps de la requête
-        });
-
-        if (response.ok) {
-            const responseData = await response.json();
-            console.log('Image uploadée avec succès:', responseData);
-            // Actions supplémentaires après l'upload, comme mettre à jour la galerie
-        } else {
-            const errorData = await response.json();
-            throw new Error(`Erreur lors de l'upload: ${response.statusText}, ${JSON.stringify(errorData)}`);
-        }
-    } catch (error) {
-        console.error('Failed to upload work:', error);
-    }
-}
-
 // Fonction pour ajouter les options de catégories au select
 async function addCategoryOptions() {
     // Assurez-vous que les catégories sont chargées
@@ -712,6 +690,13 @@ async function addCategoryOptions() {
     if (selectCategory) {
         selectCategory.innerHTML = ''; // Vide les options existantes
 
+        // Ajoutez une option vide par défaut
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = '';
+        selectCategory.appendChild(defaultOption);
+
+        // Ajoutez les options des catégories
         allCategories.forEach(category => {
             const option = document.createElement('option');
             option.value = category.id;
@@ -721,6 +706,25 @@ async function addCategoryOptions() {
     } else {
         console.error('Element selectCategory not found');
     }
+}
+
+// Fonction pour fermer les modals
+function closeModal() {
+    const modal1 = document.querySelector('.modal');
+    const modal2 = document.querySelector('.modal-2');
+    const overlay = document.querySelector('.overlay');
+
+    // Ferme la modale si elle existe
+    if (modal1) {
+        modal1.remove();
+    }
+    if (modal2) {
+        modal2.remove();
+    }
+
+    // Ferme l'overlay
+    overlay.classList.add('hide'); // Ajoute la classe 'hide' à l'overlay
+    document.body.classList.remove('no-scroll'); // Retire la classe 'no-scroll' du body
 }
 
 ///////////      RUNNING       ///////////
