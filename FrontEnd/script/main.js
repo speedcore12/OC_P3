@@ -77,7 +77,8 @@ async function uploadWork(image, title, category) {
         if (response.ok) {
             // Extraire les données de la réponse JSON
             const responseData = await response.json();
-            // Actions supplémentaires après l'upload, comme mettre à jour la galerie
+            // Actions supplémentaires après l'upload
+            allWorks = await fetchData("works"); // Recharge les données
             console.log('Upload réussi:', responseData); // Log de succès pour vérification
         } else {
             // Extraire les données d'erreur de la réponse JSON
@@ -113,7 +114,8 @@ async function deleteImage(imageId) {
         if (response.ok) {
             // Supprime l'élément du DOM si la requête est réussie
             displayGallery(); // Met à jour la galerie pour refléter les changements
-            createModal(); // Recrée la modale pour mettre à jour son contenu
+            //createModal(); // Recrée la modale pour mettre à jour son contenu
+            addImagesToModal();
 
         } else {
             // Lancer une erreur avec le statut de la réponse et les détails de l'erreur
@@ -343,10 +345,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // LogOut
-// Sélectionne tous les éléments avec la classe 'logout'
-const logoutElement = document.querySelector('.logout-button');
 // Ajoute un gestionnaire de clic l'élément
-logoutElement.addEventListener('click', function() {
+document.querySelector('.logout-button').addEventListener('click', function() {
     // Supprime le JWT de localStorage
     localStorage.removeItem('jwt');  
 
@@ -365,6 +365,18 @@ function createModal() {
     const existingModal = document.querySelector('.modal-2');
     if (existingModal) {
         existingModal.remove();
+    }
+
+    // Check la présence de l'overlay
+    const overlay = document.querySelector('.overlay');
+    if(overlay.classList.contains('hide')){
+        overlay.classList.remove('hide');
+    }
+
+        // Check le blocage du body
+    const body = document.querySelector('body');
+    if(!body.classList.contains('no-scroll')){
+        body.classList.add('no-scroll');
     }
 
     // Créer l'élément <dialog> et ajouter la classe 'modal'
@@ -441,14 +453,27 @@ async function addImagesToModal() {
             const icon = document.createElement('i');
             icon.classList.add('fa-solid', 'fa-trash-can');
 
-            icon.addEventListener('click', function() {
-                const imageId = icon.parentElement.dataset.id;
+            icon.addEventListener('click', async function() {               
 
-                const confirmed = window.confirm("Voulez-vous vraiment supprimer ce projet ?");
+                const imageId = icon.parentElement.dataset.id; // Récupère l'ID de l'image à supprimer        
+                const confirmed = window.confirm("Voulez-vous vraiment supprimer ce projet ?"); // Demande de confirmation à l'utilisateur
                 if (confirmed) {
-                    deleteImage(imageId);
-                    createModal();
-                }
+                    console.log('Deleting image...');
+                    await deleteImage(imageId); // Attend la suppression de l'image
+                    console.log('Image deleted.');
+                
+                    console.log('Reloading data...');
+                    allWorks = await fetchData("works"); // Recharge les données
+                    console.log('Data reloaded.');
+                
+                    console.log('Closing modal...');
+                    closeModal(); // Ferme la modale
+                    console.log('Modal closed.');
+                
+                    console.log('Creating modal...');
+                    createModal(); // Recrée la modale
+                    console.log('Modal created.');
+                }                
             });
 
             // Ajoute l'icône à la div
@@ -468,6 +493,18 @@ function createModal2() {
     const existingModal = document.querySelector('.modal');
     if (existingModal) {
         existingModal.remove();
+    }
+
+    // Check la présence de l'overlay
+    const overlay = document.querySelector('.overlay');
+    if(overlay.classList.contains('hide')){
+        overlay.classList.remove('hide');
+    }
+
+        // Check le blocage du body
+    const body = document.querySelector('body');
+    if(!body.classList.contains('no-scroll')){
+        body.classList.add('no-scroll');
     }
 
     // Crée l'élément dialog
@@ -639,7 +676,7 @@ function createModal2() {
     document.querySelector('.overlay').addEventListener('click', closeModal);
     backButton.addEventListener('click', createModal);
 
-    addCategoryOptions()
+    addCategoryOptions();
 
     // Ajouter la modification de la couleur du bouton submit
     // Récupère tous les champs requis
@@ -672,6 +709,8 @@ function createModal2() {
             const title = inputDescription.value; // Récupérer le titre
             const category = selectCategory.value; // Récupérer la catégorie
             uploadWork(image, title, category); // Appeler la fonction d'upload
+            closeModal(); // Ferme la modal2 
+            createModal2(); // MaJ modal2 pour ajout d'autres works
         } else {
             console.error('Le bouton de soumission n\'est pas clickable.');
         }
