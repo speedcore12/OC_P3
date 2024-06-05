@@ -571,8 +571,9 @@ function createModal2() {
         const maxSize = 4 * 1024 * 1024; // Taille maximale de 4 Mo
     
         if (file && file.size > maxSize) {
-            alert('La taille du fichier dépasse la limite de 4 Mo. Veuillez choisir un fichier plus petit.');
-            inputFile.value = ''; // Réinitialise l'input
+            alert('La taille du fichier dépasse la limite de 4 Mo ou le format de l\'image est mauvais (jpg ou png). Veuillez choisir un autre fichier.');
+            closeModal();
+            createModal2();
         }
     }); 
 
@@ -711,6 +712,7 @@ function createModal2() {
             uploadWork(image, title, category); // Appeler la fonction d'upload
             closeModal(); // Ferme la modal2 
             createModal2(); // MaJ modal2 pour ajout d'autres works
+            displayGallery(); // Met à jour la galerie
         } else {
             console.error('Le bouton de soumission n\'est pas clickable.');
         }
