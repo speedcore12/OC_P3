@@ -70,7 +70,7 @@ async function uploadWork(image, title, category) {
                 'Authorization': `Bearer ${token}`
             },
             // Utiliser l'objet FormData comme corps de la requête
-            body: formData 
+            body: formData
         });
 
         // Vérifier si la requête a réussi
@@ -703,13 +703,13 @@ function createModal2() {
     });
 
     // Ajout de l'Event Listener au bouton de soumission de upload
-    submitButton.addEventListener('click', function(event) {
+    submitButton.addEventListener('click', async function(event) {
         event.preventDefault(); // Empêcher le comportement par défaut du bouton
         if (this.classList.contains('clickable')) {
             const image = inputFile.files[0]; // Récupérer le fichier image
             const title = inputDescription.value; // Récupérer le titre
             const category = selectCategory.value; // Récupérer la catégorie
-            uploadWork(image, title, category); // Appeler la fonction d'upload
+            await uploadWork(image, title, category); // Appeler la fonction d'upload
             closeModal(); // Ferme la modal2 
             createModal2(); // MaJ modal2 pour ajout d'autres works
             displayGallery(); // Met à jour la galerie
