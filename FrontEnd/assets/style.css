@@ -267,7 +267,6 @@ footer li{
 	margin-left: 20px;
 	font-size: 14px;
 }
-
 .filters button, #loginForm button, 
 .add-image{
 	margin: 0 5px 50px 5px;
@@ -401,7 +400,7 @@ ul li{
 	border: 1px solid black;
 	border-radius: 10px;
 	padding: 20px;
-
+	border: 1px solid white;
     position: fixed;
 	left: 50%;
 	top: 50%;
