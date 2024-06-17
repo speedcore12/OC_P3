@@ -106,7 +106,8 @@ async function deleteImage(imageId) {
             method: 'DELETE', // Méthode HTTP à utiliser pour la requête
             headers: {
                 'accept': '*/*', // Accepter toutes les réponses de type MIME
-                'Authorization': `Bearer ${token}` // Ajouter le token JWT à l'en-tête de la requête pour l'authentification
+                // Ajouter le token JWT à l'en-tête de la requête pour l'authentification
+                'Authorization': `Bearer ${token}` 
             }
         });
 
@@ -114,7 +115,7 @@ async function deleteImage(imageId) {
         if (response.ok) {
             // Supprime l'élément du DOM si la requête est réussie
             displayGallery(); // Met à jour la galerie pour refléter les changements
-            //createModal(); // Recrée la modale pour mettre à jour son contenu
+            // Maj de la modal
             addImagesToModal();
 
         } else {
@@ -417,7 +418,7 @@ function createModal() {
     // Ajouter le dialog au corps du document
     document.body.appendChild(modal);
 
-        document.querySelector('.overlay').classList.remove('hide');
+    document.querySelector('.overlay').classList.remove('hide');
     document.querySelector('body').classList.add('no-scroll');
 
     // Ajout de divers events de transition
@@ -431,7 +432,8 @@ function createModal() {
 
 async function addImagesToModal() {
     const container = document.querySelector('.img-contener');
-    container.innerHTML = '';  // Vide le conteneur pour être sûr qu'il n'y a pas d'images précédentes
+    // Vide le conteneur pour être sûr qu'il n'y a pas d'images précédentes
+    container.innerHTML = '';  
 
     try {
         // S'assurer que les données sont chargées
@@ -440,8 +442,8 @@ async function addImagesToModal() {
         }
 
         allWorks.forEach(image => {
-            const div = document.createElement('div');
-            div.classList.add('img-modal');  // Ajoute la classe pour le style
+            const div = document.createElement('div');            
+            div.classList.add('img-modal'); 
 
             // Définit l'image en arrière-plan
             div.style.backgroundImage = `url(${image.imageUrl})`;
@@ -455,24 +457,20 @@ async function addImagesToModal() {
 
             icon.addEventListener('click', async function() {               
 
-                const imageId = icon.parentElement.dataset.id; // Récupère l'ID de l'image à supprimer        
-                const confirmed = window.confirm("Voulez-vous vraiment supprimer ce projet ?"); // Demande de confirmation à l'utilisateur
+                // Récupère l'ID de l'image à supprimer 
+                const imageId = icon.parentElement.dataset.id;       
+                // Demande de confirmation à l'utilisateur
+                const confirmed = window.confirm("Voulez-vous vraiment supprimer ce projet ?"); 
                 if (confirmed) {
-                    console.log('Deleting image...');
-                    await deleteImage(imageId); // Attend la suppression de l'image
-                    console.log('Image deleted.');
-                
-                    console.log('Reloading data...');
-                    allWorks = await fetchData("works"); // Recharge les données
-                    console.log('Data reloaded.');
-                
-                    console.log('Closing modal...');
-                    closeModal(); // Ferme la modale
-                    console.log('Modal closed.');
-                
-                    console.log('Creating modal...');
-                    createModal(); // Recrée la modale
-                    console.log('Modal created.');
+                    // Attend la suppression de l'image  
+                    await deleteImage(imageId); 
+                    
+                    // Recharge les données
+                    allWorks = await fetchData("works");
+
+                    // Met à jour la galerie 
+                    closeModal(); 
+                    createModal(); 
                 }                
             });
 
@@ -560,8 +558,10 @@ function createModal2() {
     inputFile.type = 'file';
     inputFile.id = 'image';
     inputFile.name = 'image';
-    inputFile.accept = 'image/jpeg, image/png'; // Accepte uniquement les formats jpg et png
-    inputFile.multiple = false; // Assure que seule une image peut être sélectionnée
+    // Accepte uniquement les formats jpg et png
+    inputFile.accept = 'image/jpeg, image/png'; 
+    // Assure que seule une image peut être sélectionnée
+    inputFile.multiple = false; 
     inputFile.required = true;
     imageArea.appendChild(inputFile);
     
@@ -569,14 +569,17 @@ function createModal2() {
     inputFile.addEventListener('change', function(event) {
         const file = event.target.files[0];
         const maxSize = 4 * 1024 * 1024; // Taille maximale de 4 Mo
-    
-        if (file && file.size > maxSize) {
+
+        // Vérification de l'extension du fichier
+        const validExtensions = ['jpg', 'png'];
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+
+        if (file && (file.size > maxSize || !validExtensions.includes(fileExtension))) {
             alert('La taille du fichier dépasse la limite de 4 Mo ou le format de l\'image est mauvais (jpg ou png). Veuillez choisir un autre fichier.');
             closeModal();
             createModal2();
         }
-    }); 
-
+    });
     // Affichage de l'image chargée 
     // Quand une image est chargée
     inputFile.addEventListener('change', function(event) {
@@ -625,7 +628,7 @@ function createModal2() {
     const labelDescription = document.createElement('label');
     labelDescription.classList.add('modal-2-label');    
     labelDescription.setAttribute('for', 'titre');
-    labelDescription.textContent = 'Description :';
+    labelDescription.textContent = 'Titre';
     form.appendChild(labelDescription);
 
     const inputDescription = document.createElement('input');
@@ -640,7 +643,7 @@ function createModal2() {
     const labelCategory = document.createElement('label');
     labelCategory.classList.add('modal-2-label');
     labelCategory.setAttribute('for', 'category');
-    labelCategory.textContent = 'Catégorie :';
+    labelCategory.textContent = 'Catégorie';
     form.appendChild(labelCategory);
 
     const selectCategory = document.createElement('select');
@@ -764,8 +767,10 @@ function closeModal() {
     }
 
     // Ferme l'overlay
-    overlay.classList.add('hide'); // Ajoute la classe 'hide' à l'overlay
-    document.body.classList.remove('no-scroll'); // Retire la classe 'no-scroll' du body
+    // Ajoute la classe 'hide' à l'overlay
+    overlay.classList.add('hide'); 
+    // Retire la classe 'no-scroll' du body
+    document.body.classList.remove('no-scroll'); 
 }
 
 ///////////      RUNNING       ///////////

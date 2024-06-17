@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="./assets/style.css">
 	<script src="./script/conection.js" defer></script>
 </head>
-<body>
+<body id="bodyLogIn">
 	<header>
 		<div class="top-menu">
 			<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
@@ -19,7 +19,7 @@
 				<ul> 
 					<li><a href="index.html#portfolio">projets</a></li>
 					<li><a href="index.html#contact">contact</a></li>
-					<li><a href="connection.html">login</a></li>
+					<li id="loginbtn"><a href="connection.html">login</a></li>
 					<li class="hide">logout</li>
 					<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 				</ul>
@@ -36,7 +36,7 @@
 			<input type="email" id="username" name="username" autocomplete="email" required>
 			<label for="password">Mot de passe:</label>
 			<input type="password" id="password" name="password" autocomplete="current-password" required>
-			<button type="submit">Connexion</button>
+			<button type="submit">Se connecter</button>
 			<p id="errorMessage">Erreur dans l’identifiant ou le mot de passe.</p>
 		</form>		
 		<a href="#" color="black">Mot de passe oublié?</a>
@@ -46,7 +46,7 @@
 	
 </main>
 
-<footer>
+<footer id="footerLogIn">
 	<nav>
 		<ul>
 			<li>Mentions Légales</li>

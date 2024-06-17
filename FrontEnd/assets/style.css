@@ -30,6 +30,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	background-color: #FFFEF8;
 }
 ol, ul {
 	list-style: none;
@@ -57,6 +58,7 @@ main, .top-menu {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	color: black;
 }
 
 header {
@@ -187,6 +189,37 @@ li:hover {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
+#loginForm input, #loginForm textarea{
+	width: 380px;
+	height: 30px;
+}
+
+#loginForm button{
+	width: 180px;
+	height: 35px;
+	font-size: 14px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+p{
+	color: black;
+}
+
+footer{
+	color: black;
+    width: 100%;
+	font-family: 'Work Sans' ;
+	font-size: 14px;
+	background-color: white;
+}
+
+#footerLogIn {
+    position: absolute;
+    bottom: 0;
+}
+
 /* Simplification pour les labels */
 #contact label, #loginForm label, .modal-2-label{
 	margin: 2em 0 1em 0;
@@ -226,6 +259,10 @@ footer nav ul {
 	margin-bottom: 50px;
 }
 
+footer li{
+	cursor: pointer;
+}
+
 .filter-title p{
 	margin-left: 20px;
 	font-size: 14px;
@@ -233,8 +270,8 @@ footer nav ul {
 
 .filters button, #loginForm button, 
 .add-image{
-	margin: 0 30px 30px 30px;
-
+	margin: 0 5px 50px 5px;
+	min-width: 100px;
 	padding: 10px;
 
 	font-family: 'Syne';
@@ -247,7 +284,13 @@ footer nav ul {
 	background-color: white;
 }
 
-.filters button:hover, .add-image:hover,
+.add-image{
+	background-color: #1D6154;
+	color: white;
+	width: 240px;
+}
+
+.filters button:hover,
 .filters button.selected, #loginForm button
 {
 	background-color: #1D6154;
@@ -263,12 +306,19 @@ footer nav ul {
 	margin-bottom: 35px;
 }
 
+#loginbtn{
+font-weight: 700;
+}
+
+ul li{
+	padding-right: 40px;
+}
 
 .login-contener {
     font-family: 'Syne';
     width: 75%; 
     margin: auto;
-    padding: 20px;
+	padding: 120px 20px 20px 20px;
 	display: flex;
 	flex-direction: column;
 }
@@ -334,6 +384,7 @@ footer nav ul {
 
 .edit-banner p{
 	font-family: 'Work Sans' ;
+	color: white;
 }
 
 .edit-button{
@@ -503,7 +554,7 @@ hr{
 .add-img-botton{
 	color: white;
 	background-color: #A7A7A7;
-	width: 40%;
+	width: 240px;
 	padding: 10px;
 	border-radius: 20px;
 	border: none;
